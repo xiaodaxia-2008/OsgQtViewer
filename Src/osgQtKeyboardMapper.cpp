@@ -102,7 +102,7 @@ const QMultiHash<int, int> initializeKeypadKeys()
 const QMultiHash<int, int> initializeKeys()
 {
     QMultiHash<int, int> map;
-
+    
     // The ASCII symbols from space to @ and the symbols betwen the letters
     //	have a one-to-one mapping between Qt and OSG
     for (int key = 0x20; key <= 0x40; ++key) map.insert(key, key);
