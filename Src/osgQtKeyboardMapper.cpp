@@ -25,7 +25,7 @@ SOFTWARE.
 #include "osgQtKeyboardMapper.h"
 
 #include "osgGA/GUIEventAdapter"
-#include <QHash>
+#include <QMultiHash>
 
 namespace osgQt
 {
@@ -33,9 +33,9 @@ using osgKey = osgGA::GUIEventAdapter::KeySymbol;
 
 constexpr int unknownKey = 0;
 
-const QHash<int, int> initializeModifierKeys()
+const QMultiHash<int, int> initializeModifierKeys()
 {
-    QHash<int, int> map;
+    QMultiHash<int, int> map;
 
     // For most modifier keys Qt does not differentiate between left and righ
     // The OSG left version is arbitrary selected
@@ -59,9 +59,9 @@ const QHash<int, int> initializeModifierKeys()
     return map;
 }
 
-const QHash<int, int> initializeKeypadKeys()
+const QMultiHash<int, int> initializeKeypadKeys()
 {
-    QHash<int, int> map;
+    QMultiHash<int, int> map;
 
     // Mappings from OSG keys to OSG keypad keys
 
@@ -99,9 +99,9 @@ const QHash<int, int> initializeKeypadKeys()
     return map;
 }
 
-const QHash<int, int> initializeKeys()
+const QMultiHash<int, int> initializeKeys()
 {
-    QHash<int, int> map;
+    QMultiHash<int, int> map;
 
     // The ASCII symbols from space to @ and the symbols betwen the letters
     //	have a one-to-one mapping between Qt and OSG
@@ -174,9 +174,9 @@ const QHash<int, int> initializeKeys()
 }
 
 // Hashes to convert the key values
-static const QHash<int, int> modifierKeys = initializeModifierKeys();
-static const QHash<int, int> keypadKeys = initializeKeypadKeys();
-static const QHash<int, int> keys = initializeKeys();
+static const QMultiHash<int, int> modifierKeys = initializeModifierKeys();
+static const QMultiHash<int, int> keypadKeys = initializeKeypadKeys();
+static const QMultiHash<int, int> keys = initializeKeys();
 
 int key(const QKeyEvent *e) { return keys.value(e->key(), unknownKey); }
 

@@ -1,13 +1,5 @@
 #include <osgQtWidget.h>
-#include <osgQtKeyboardMapper.h>
-#include <osgQtMouseMapper.h>
-#include <QApplication>
 #include <QMainWindow>
-#include <osg/ShapeDrawable>
-#include <osg/StateSet>
-#include <osg/Material>
-
-osg::Geode *createScene();
 
 
 class DemoWindow : public QMainWindow

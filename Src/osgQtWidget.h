@@ -33,6 +33,8 @@ SOFTWARE.
 
 namespace osgQt
 {
+class MouseMapper;
+class KeyboardMapper;
 
 class Widget : public QOpenGLWidget
 {
@@ -78,6 +80,8 @@ protected:
 
     osg::ref_ptr<osgViewer::Viewer> viewer = nullptr;
     osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> graphicsWindow = nullptr;
+    MouseMapper *mouse_mapper;
+    KeyboardMapper *keyboard_mapper;
 };
 
 } // namespace osgQt

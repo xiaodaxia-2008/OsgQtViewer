@@ -23,6 +23,10 @@ SOFTWARE.
 */
 
 #include "osgQtWidget.h"
+
+#include "osgQtMouseMapper.h"
+#include "osgQtKeyboardMapper.h"
+
 #include <osgGA/TrackballManipulator>
 
 using namespace osgQt;
@@ -39,12 +43,16 @@ Widget::Widget(osgViewer::Viewer *viewer, osg::Camera *camera, QWidget *parent)
     viewer->setCameraManipulator(manipulator);
     viewer->getCameraManipulator()->setHomePosition({-2, 0, 1}, {0, 0, 0},
                                                     {0, 0, 1});
-    camera->setClearColor(osg::Vec4(0.9f, 0.9f, 1.f, 1.f));
+    camera->setClearColor(osg::Vec4(1.f, 1.f, 1.f, 1.f));
     // Calculate the projection aspect ration based on the current widget
     // dimentions
     double aspectRatio = this->width();
     aspectRatio /= this->height();
     camera->setProjectionMatrixAsPerspective(30, aspectRatio, 1, 1000);
+
+    setFocusPolicy(Qt::StrongFocus);
+    mouse_mapper = new MouseMapper(this);
+    keyboard_mapper = new KeyboardMapper(this);
 }
 
 void Widget::setMainCamera(osg::Camera *camera)
