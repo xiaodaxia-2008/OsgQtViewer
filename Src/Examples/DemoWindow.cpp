@@ -16,7 +16,7 @@ osg::Geode *createScene()
     sd->setColor(osg::Vec4(0.8f, 0.5f, 0.2f, 1.f));
     root->addDrawable(sd);
 
-    osg::StateSet *stateSet = root->getOrCreateStateSet();
+    osg::StateSet *stateSet = sd->getOrCreateStateSet();
     osg::Material *material = new osg::Material;
     material->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
     stateSet->setAttributeAndModes(material);
