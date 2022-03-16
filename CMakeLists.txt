@@ -17,8 +17,6 @@ find_package(
   REQUIRED)
 set(CMAKE_AUTOMOC ON)
 
-find_package(Fontconfig REQUIRED)
-
 # set(OpenSceneGraph_DIR
 # $ENV{HOME}/Rvbust/Install/OpenSceneGraph/lib/cmake/OpenSceneGraph)
 # find_package( OpenSceneGraph NO_DEFAULT_PATH COMPONENTS osgManipulator osgDB
