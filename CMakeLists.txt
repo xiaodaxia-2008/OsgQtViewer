@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.10)
 
 # set(CMAKE_INSTALL_PREFIX
 #     "/usr/local"
@@ -16,7 +16,7 @@ find_package(
   COMPONENTS Widgets
   REQUIRED)
 set(CMAKE_AUTOMOC ON)
-
+find_package(OpenGL REQUIRED)
 # set(OpenSceneGraph_DIR
 # $ENV{HOME}/Rvbust/Install/OpenSceneGraph/lib/cmake/OpenSceneGraph)
 # find_package( OpenSceneGraph NO_DEFAULT_PATH COMPONENTS osgManipulator osgDB
