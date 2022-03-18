@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "osgQtKeyboardMapper.h"
+#include "OsgQtKeyboardMapper.h"
 
 #include "osgGA/GUIEventAdapter"
 #include <QMultiHash>
 
-namespace osgQt
+namespace Vis
 {
 using osgKey = osgGA::GUIEventAdapter::KeySymbol;
 
@@ -102,7 +102,7 @@ const QMultiHash<int, int> initializeKeypadKeys()
 const QMultiHash<int, int> initializeKeys()
 {
     QMultiHash<int, int> map;
-    
+
     // The ASCII symbols from space to @ and the symbols betwen the letters
     //	have a one-to-one mapping between Qt and OSG
     for (int key = 0x20; key <= 0x40; ++key) map.insert(key, key);
@@ -206,26 +206,26 @@ int unmodifiedKey(const QKeyEvent *e, int key)
     return key;
 }
 
-} // namespace osgQt
+} // namespace Vis
 
-using namespace osgQt;
+using namespace Vis;
 
 bool KeyboardMapper::eventFilter(QObject *obj, QEvent *event)
 {
-    Widget *o = static_cast<Widget *>(obj);
+    QViewerWidget *o = static_cast<QViewerWidget *>(obj);
     const QEvent::Type eventType = event->type();
 
     switch (eventType) {
     case QEvent::KeyPress:
     case QEvent::KeyRelease: {
         const QKeyEvent *e = static_cast<QKeyEvent *>(event);
-        const int key = osgQt::key(e);
+        const int key = Vis::key(e);
 
         if (key == unknownKey)
             // There is no mapping to OSG for this key event
             break;
 
-        const int unmodifiedKey = osgQt::unmodifiedKey(e, key);
+        const int unmodifiedKey = Vis::unmodifiedKey(e, key);
 
         if (eventType == QEvent::KeyPress)
             o->getGraphicsWindow().get()->getEventQueue()->keyPress(

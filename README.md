@@ -1,7 +1,7 @@
 # OsgQtViewer
 
 ```shell
-sudo apt install fontconfig-config libopenscenegraph-3.4-dev
+sudo apt install fontconfig-config libopenscenegraph-3.4-dev qt5-default qttools5-dev
 ```
 
 # Build

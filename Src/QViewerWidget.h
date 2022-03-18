@@ -27,63 +27,68 @@ SOFTWARE.
 
 #include <QOpenGLWidget>
 
+#include "Vis.h"
+
 #include <osg/ref_ptr>
 #include <osgViewer/GraphicsWindow>
 #include <osgViewer/Viewer>
 
-namespace osgQt
+namespace Vis
 {
 class MouseMapper;
 class KeyboardMapper;
 
-class Widget : public QOpenGLWidget
+class QViewerWidget : public QOpenGLWidget
 {
     Q_OBJECT
 
 public:
-    explicit Widget(QWidget *parent = nullptr)
-        : Widget(new osgViewer::Viewer, new osg::Camera, parent)
-    {
-    }
+    explicit QViewerWidget(QWidget *parent = nullptr,
+                           Qt::WindowFlags f = Qt::WindowFlags());
 
-    explicit Widget(osg::ref_ptr<osgViewer::Viewer> &viewer,
-                    osg::ref_ptr<osg::Camera> &camera,
-                    QWidget *parent = nullptr)
-        : Widget(viewer.get(), camera.get(), parent)
-    {
-    }
 
-    Widget(osgViewer::Viewer *viewer, osg::Camera *camera,
-           QWidget *parent = nullptr);
+    // explicit Widget(osg::ref_ptr<osgViewer::Viewer> &viewer,
+    //                 osg::ref_ptr<osg::Camera> &camera,
+    //                 QWidget *parent = nullptr)
+    //     : Widget(viewer.get(), camera.get(), parent)
+    // {
+    // }
 
-    osg::ref_ptr<osg::Camera> getCamera() { return viewer->getCamera(); }
-    osg::ref_ptr<osgViewer::Viewer> &getViewer() { return viewer; }
+    // Widget(osgViewer::Viewer *viewer, osg::Camera *camera,
+    //        QWidget *parent = nullptr);
+
+    // osg::ref_ptr<osg::Camera> getCamera() { return viewer->getCamera(); }
+    // osg::ref_ptr<osgViewer::Viewer> &getViewer() { return viewer; }
     osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> &getGraphicsWindow()
     {
-        return graphicsWindow;
+        return m_graphics_window;
     }
 
-    void setMainCamera(osg::Camera *camera);
+    // void setMainCamera(osg::Camera *camera);
 
     // Helper function to set the scene root
-    template <class T>
-    void setSceneData(const osg::ref_ptr<T> &node)
-    {
-        setSceneData(node.get());
-    }
+    // template <class T>
+    // void setSceneData(const osg::ref_ptr<T> &node)
+    // {
+    //     setSceneData(node.get());
+    // }
 
-    void setSceneData(osg::Node *node) { viewer->setSceneData(node); }
+    // void setSceneData(osg::Node *node) { GetOsgViewer()->setSceneData(node);
+    // }
+    std::shared_ptr<Vis::View> GetView();
 
 protected:
     virtual void resizeGL(int w, int h) override;
     virtual void paintGL() override;
+    osgViewer::Viewer *GetOsgViewer();
 
-    osg::ref_ptr<osgViewer::Viewer> viewer = nullptr;
-    osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> graphicsWindow = nullptr;
-    MouseMapper *mouse_mapper;
-    KeyboardMapper *keyboard_mapper;
+    // osg::ref_ptr<osgViewer::Viewer> viewer = nullptr;
+    std::shared_ptr<Vis::View> m_view;
+    osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> m_graphics_window = nullptr;
+    std::shared_ptr<MouseMapper> m_mouse_mapper;
+    std::shared_ptr<KeyboardMapper> m_keyboard_mapper;
 };
 
-} // namespace osgQt
+} // namespace Vis
 
 #endif // QTOSGWIDGET_H

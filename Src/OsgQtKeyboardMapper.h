@@ -22,26 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef QTOSGMOUSEMAPPER_H
-#define QTOSGMOUSEMAPPER_H
+#ifndef KEYBOARDMAPPER_H
+#define KEYBOARDMAPPER_H
 
 #include <QtEvents>
 
-#include "osgQtWidget.h"
+#include "QViewerWidget.h"
 
-namespace osgQt
+namespace Vis
 {
 
-class MouseMapper : public QObject
+class KeyboardMapper : public QObject
 {
     Q_OBJECT
 public:
-    MouseMapper(Widget *parent) : QObject(parent)
+    KeyboardMapper(QViewerWidget *parent) : QObject(parent)
     {
         if (parent) parent->installEventFilter(this);
     }
 
-    ~MouseMapper()
+    ~KeyboardMapper()
     {
         if (parent()) parent()->removeEventFilter(this);
     }
@@ -50,6 +50,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
-} // namespace osgQt
+} // namespace Vis
 
-#endif // QTOSGMOUSEMAPPER_H
+
+#endif // KEYBOARDMAPPER_H

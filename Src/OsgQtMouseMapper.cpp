@@ -22,9 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include "osgQtMouseMapper.h"
+#include "OsgQtMouseMapper.h"
 
-using namespace osgQt;
+using namespace Vis;
 
 bool MouseMapper::eventFilter(QObject *obj, QEvent *event)
 {
@@ -41,7 +41,7 @@ bool MouseMapper::eventFilter(QObject *obj, QEvent *event)
         }
     };
 
-    Widget *o = static_cast<Widget *>(obj);
+    QViewerWidget *o = static_cast<QViewerWidget *>(obj);
 
     switch (event->type()) {
     case QEvent::MouseButtonPress:
