@@ -4,6 +4,7 @@
 
 #include "Logger.h"
 #include "GizmoDrawable.h"
+#include "TouchballManipulator.h"
 
 #include <unordered_map>
 #include <osg/ref_ptr>
@@ -16,6 +17,7 @@
 #include <osgDB/ReadFile>
 #include <osgUtil/SmoothingVisitor>
 #include <osgFX/Outline>
+#include <osgGA/TrackballManipulator>
 
 #include <atomic>
 #include <unordered_set>
@@ -59,19 +61,35 @@ static inline uint64_t NextObjectID()
     return ++sg_uid; // valid from one
 }
 
-View::View(osgViewer::Viewer *viewer)
+View::View()
 {
     m_vis3d = std::make_shared<Vis3d>();
     m_vis3d->node_switch = new osg::Switch;
     m_vis3d->scene_root = new osg::Group;
-    if (viewer) {
-        m_vis3d->osgviewer = viewer;
-    }
-    else {
-        m_vis3d->osgviewer = new osgViewer::Viewer;
-    }
+    m_vis3d->osgviewer = new osgViewer::Viewer;
+
+    osg::ref_ptr<osg::Camera> camera = new osg::Camera;
+    camera->setClearMask(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT
+                         | GL_STENCIL_BUFFER_BIT);
+    camera->setCullingMode(camera->getCullingMode()
+                           & ~osg::CullSettings::SMALL_FEATURE_CULLING);
+    camera->setClearColor(osg::Vec4(1.f, 1.f, 1.f, 1.f));
+    m_vis3d->osgviewer->setCamera(camera);
+    m_vis3d->osgviewer->setCameraManipulator(new TouchballManipulator(
+        &(m_vis3d->gizmo.capture), &(m_vis3d->gizmo.view_manipulation)));
+
     m_vis3d->osgviewer->setSceneData(m_vis3d->scene_root);
     m_vis3d->scene_root->addChild(m_vis3d->node_switch);
+
+    osg::StateSet *stateSet = m_vis3d->scene_root->getOrCreateStateSet();
+    osg::Material *material = new osg::Material;
+    material->setColorMode(osg::Material::DIFFUSE);
+    stateSet->setAttributeAndModes(material);
+
+    osg::setNotifyLevel(osg::FATAL);
+    osg::DisplaySettings::instance()->setMinimumNumStencilBits(1);
+    osgDB::Registry::instance()->setBuildKdTreesHint(
+        osgDB::Options::BUILD_KDTREES);
 }
 
 bool View::SetHomePose(const std::array<float, 3> &eye,

@@ -106,7 +106,7 @@ struct View
 {
     friend class QViewerWidget;
 
-    View(osgViewer::Viewer *viewer = nullptr);
+    View();
 
     /**
      * Close the window.
@@ -266,8 +266,8 @@ struct View
     // bool ShowAxes(bool show = true);
     Handle Axes(const std::array<float, 3> &trans = {0.f, 0.f, 0.f},
                 const std::array<float, 4> &quat = {0.f, 0.f, 0.f, 1.f},
-                float axis_len = 15.f, float axis_size = 3.f);
-    Handle Axes(const std::array<float, 16> &transform, float axis_len = 15.f,
+                float axis_len = 1.f, float axis_size = 3.f);
+    Handle Axes(const std::array<float, 16> &transform, float axis_len = 1.f,
                 float axis_size = 3.f);
 
     /**

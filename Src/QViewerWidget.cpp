@@ -35,48 +35,27 @@ using namespace Vis;
 QViewerWidget::QViewerWidget(QWidget *parent, Qt::WindowFlags f)
     : QOpenGLWidget(parent, f)
 {
-    // setMainCamera(camera);
-    // // set default manipulator
-    // osgGA::TrackballManipulator *manipulator = new
-    // osgGA::TrackballManipulator; viewer->setCameraManipulator(manipulator);
-    // viewer->getCameraManipulator()->setHomePosition({-2, 0, 1}, {0, 0, 0},
-    //                                                 {0, 0, 1});
-    // Calculate the projection aspect ration based on the current widget
-    // dimentions
+    m_view = std::make_shared<Vis::View>();
+    m_graphics_window = GetOsgViewer()->setUpViewerAsEmbeddedInWindow(
+        x(), y(), width(), height());
+    GetOsgViewer()->getCamera()->setGraphicsContext(m_graphics_window.get());
 
-    m_graphics_window =
-        new osgViewer::GraphicsWindowEmbedded(x(), y(), width(), height());
-
-    osg::ref_ptr<osgViewer::Viewer> osgviewer = new osgViewer::Viewer;
-    osg::ref_ptr<osg::Camera> camera = new osg::Camera;
-    camera->setGraphicsContext(m_graphics_window.get());
-    camera->setCullingMode(camera->getCullingMode()
-                           & ~osg::CullSettings::SMALL_FEATURE_CULLING);
-    camera->setClearColor(osg::Vec4(1.f, 1.f, 1.f, 1.f));
     double aspectRatio = this->width();
     aspectRatio /= this->height();
-    camera->setProjectionMatrixAsPerspective(30, aspectRatio, 1, 1000);
-    osgviewer->setCamera(camera);
-
-    m_view = std::shared_ptr<Vis::View>(new Vis::View(osgviewer));
-    osgviewer->setCameraManipulator(
-        new TouchballManipulator(&(m_view->m_vis3d->gizmo.capture),
-                                 &(m_view->m_vis3d->gizmo.view_manipulation)));
-    osgviewer->getCameraManipulator()->setHomePosition({-2, 0, 1}, {0, 0, 0},
-                                                       {0, 0, 1});
+    GetOsgViewer()->getCamera()->setProjectionMatrixAsPerspective(
+        30, aspectRatio, 1, 1000);
     m_mouse_mapper = std::shared_ptr<MouseMapper>(new MouseMapper(this));
     m_keyboard_mapper =
         std::shared_ptr<KeyboardMapper>(new KeyboardMapper(this));
+    GetOsgViewer()->home();
     setFocusPolicy(Qt::StrongFocus);
 }
 
-// void Widget::setMainCamera(osg::Camera *camera)
-// {
-//     if (camera != nullptr) {
-//         viewer->setCamera(camera);
-//         camera->setGraphicsContext(graphicsWindow.get());
-//     }
-// }
+void QViewerWidget::initializeGL()
+{
+    QOpenGLWidget::initializeGL();
+    glEnable(GL_DEPTH_TEST);
+}
 
 void QViewerWidget::resizeGL(int w, int h)
 {

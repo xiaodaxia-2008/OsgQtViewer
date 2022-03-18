@@ -78,8 +78,10 @@ public:
     std::shared_ptr<Vis::View> GetView();
 
 protected:
+    virtual void initializeGL() override;
     virtual void resizeGL(int w, int h) override;
     virtual void paintGL() override;
+
     osgViewer::Viewer *GetOsgViewer();
 
     // osg::ref_ptr<osgViewer::Viewer> viewer = nullptr;

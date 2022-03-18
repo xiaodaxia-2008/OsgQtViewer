@@ -1,4 +1,4 @@
-add_executable(BasicViewer BasicViewer.cpp)
-target_link_libraries(BasicViewer PRIVATE QViewerWidget)
+add_executable(OsgQtViewer OsgQtViewer.cpp)
+target_link_libraries(OsgQtViewer PRIVATE QViewerWidget)
 
-install(TARGETS BasicViewer RUNTIME DESTINATION bin)
+install(TARGETS OsgQtViewer RUNTIME DESTINATION bin)
