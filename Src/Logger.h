@@ -1,6 +1,7 @@
 // Copyright (c) RVBUST, Inc - All rights reserved.
 #pragma once
 #include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
 
 #define LEVEL_TRACE spdlog::level::trace
 #define LEVEL_DEBUG spdlog::level::debug
